@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/worldtimeapp/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/worldtimeapp/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/worldtimeapp/build" />
+      <excludeFolder url="file://$MODULE_DIR$/node_backend/frontend/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/node_backend/frontend/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/node_backend/frontend/build" />
+      <excludeFolder url="file://$MODULE_DIR$/arrays/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/arrays/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/arrays/build" />
+      <excludeFolder url="file://$MODULE_DIR$/starconnect/build" />
+      <excludeFolder url="file://$MODULE_DIR$/starconnect/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/starconnect/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/learningdart/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/learningdart/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/learningdart/build" />
+      <excludeFolder url="file://$MODULE_DIR$/id_project/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/id_project/build" />
+      <excludeFolder url="file://$MODULE_DIR$/id_project/.dart_tool" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
+  </component>
+</module>

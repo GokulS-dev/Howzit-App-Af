@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model celeb {
+   id          Int         @id @default(autoincrement())
+   username    String      @unique
+   email       String      @unique
+   socials     String
+   password    String
+   verified    Boolean     @default(false)
+   bio         String      @default("Hey there! Im using Starconnectz")
+   profile_pic String      @default("https://gravatar.com/avatar/HASH")
+   createdAt   DateTime    @default(now())
+   posts       post[]
+   services    service[]
+   followers   fan[]       @relation("User_follows")
+   orders      order[]
+   merch       merch[]
+   country     String      @default("Not_Found")
+   @@unique([id,username])
+}
+
+model fan {
+  id                      Int         @id @default(autoincrement())
+  username                String      @unique
+  email                   String      @unique
+  password                String
+  phone                   String
+  verified                Boolean     @default(false)
+  createdAt               DateTime    @default(now())
+  following               celeb[]     @relation("User_follows")
+  orders                  order[]
+  country                 String      @default("Not_Found")
+  @@unique([id,username])
+}
+
+model post {
+  id                  Int          @id @default(autoincrement())
+  celebid             Int
+  celeb_username      String    
+  created_at          DateTime     @default(now())
+  imagename           String
+  caption             String
+  celeb               celeb        @relation(fields: [celebid,celeb_username], references: [id,username], onDelete: Cascade, onUpdate: Cascade )
+}
+
+model order {
+  id                Int          @id @default(autoincrement())
+  status            String       @default("pending")
+  created_at        DateTime     @default(now())
+  fanid             Int
+  celebid           Int
+  serviceid         Int
+  price             Int
+  fan_username      String
+  celeb_username    String
+  service_details   String
+  call_id           String       @default("")
+  celeb_token       String       @default("")
+  audio_name        String       @default("")
+  video_name        String       @default("")
+  reject_reason     String       @default("")
+  occassion         String       @default("occassion")
+  wishes_to         String       @default("wishes_to")
+  additional_info   String       @default("additional_info")
+  celeb             celeb        @relation(fields: [celebid,celeb_username], references: [id,username], onDelete: Cascade, onUpdate: Cascade)
+  fan               fan          @relation(fields: [fanid,fan_username], references: [id,username], onDelete: Cascade, onUpdate: Cascade)
+  service           service      @relation(fields: [serviceid,service_details], references: [id,description], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model service {
+id                  Int          @id @default(autoincrement())
+celebid             Int
+price               Int
+description         String
+time_needed         Int
+celeb_username      String
+orders              order[]
+category            String
+celeb               celeb        @relation(fields: [celebid,celeb_username], references: [id,username], onDelete: Cascade, onUpdate: Cascade)
+@@unique([id,description])
+}
+
+model video {
+  id                Int         @id @default(autoincrement())
+  filename          String
+  celebid           Int
+  celeb_username    String
+  fanid             Int
+  fan_username      String
+  created_at        DateTime    @default(now())
+  status            String
+  description       String      @default("Video Description")
+}
+
+model audio {
+  id                Int         @id @default(autoincrement())
+  filename          String
+  celebid           Int
+  celeb_username    String
+  fanid             Int
+  fan_username      String
+  created_at        DateTime    @default(now())
+  status            String
+  description       String      @default("Video Description")
+}
+
+model merch {
+  id                Int         @id @default(autoincrement())
+  price             Int
+  description       String      @db.MediumText
+  status            String
+  imagename         String
+  celeb_username    String
+  created_at        DateTime    @default(now())
+  celebid           Int
+  celeb             celeb       @relation(fields: [celeb_username,celebid], references: [username,id], onDelete: Cascade, onUpdate: Cascade)
+}

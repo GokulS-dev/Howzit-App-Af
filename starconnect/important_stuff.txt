@@ -1,0 +1,276 @@
+// LOADING IMPLEMENTATION 
+Step 1: Introduced _isLoading as a boolean variable to track the loading state.
+
+class _AuthScreenState extends State<AuthScreen> {
+  late TextEditingController usernameController;
+  late TextEditingController passwordController;
+  String userName = 'User';
+  bool _isCelebrity = false;
+  bool _obscureText = true;
+  bool _isLoading = false;
+
+
+Step 2: Modified the login method to set _isLoading to true before making the HTTP request and reset it to false after receiving a response or encountering an error.
+
+Future<void> login() async {
+  setState(() {
+    _isLoading = true; // Set loading state to true
+  });
+....
+....
+....
+} catch (e) {
+    print('Error: $e');
+  } finally {
+    setState(() {
+      _isLoading = false; // Set loading state to false
+    });
+}
+
+Step 3: Updated the build method to conditionally display a CircularProgressIndicator when _isLoading is true.
+
+
+ElevatedButton(
+  onPressed: _isLoading ? null : login, // Disable button when loading
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Theme.of(context).colorScheme.secondary,
+    foregroundColor: const Color(0xFF171c2e),
+    padding: const EdgeInsets.symmetric(
+      vertical: 16,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+  ),
+  child: _isLoading
+      ? CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(
+            Theme.of(context).colorScheme.secondary,
+          ),
+        )
+      : Text(
+          'Login',
+          style: GoogleFonts.readexPro(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF171c2e),
+          ),
+        ),
+
+
+
+
+
+
+// BUTTON STYLING
+ SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: signUp,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.secondary,
+                            foregroundColor: const Color(0xFF171c2e),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            'Sign Up',
+                            style: GoogleFonts.readexPro(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF171c2e),
+                            ),
+                          ),
+                        ),
+                      ),
+
+
+
+// ERROR  / SUCCESS HANDLING
+ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).colorScheme.error,
+            content: Text(
+              responseData['message']!,
+              style: GoogleFonts.readexPro(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+
+      
+Map<String, dynamic> responseData = json.decode(response.body);
+
+
+// 	FETCH CELEBRITY DETAILS
+
+ Future<void> fetchCelebrityDetails(String username) async {
+    Map<String, String> reqBody = {"username": username};
+    String? token = await readValue();
+
+    try {
+      final response = await http.get(
+        Uri.parse(celebDetailsEndpoint + username),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+
+      // Print request details
+      print('Request URL: ${Uri.parse(celebDetailsEndpoint + username)}');
+      print('Request Headers: ${{
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      }}');
+      print('Request Body: $reqBody');
+     
+      if (response.statusCode == 200) {
+        // Parse the JSON response
+        Map<String, dynamic> data = jsonDecode(response.body);
+        print("Response Body : $data");
+
+        // Check if the username matches
+        if (username == widget.userName) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileScreen(
+                jsonString: response.body,
+              ),
+            ),
+          );
+        } else {
+          // Navigate to the CelebrityDetailsScreen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CelebrityDetailsScreen(
+                username: widget.userName,
+                jsonString: response.body,
+              ),
+            ),
+          );
+        }
+
+        print('Response Headers: ${response.headers}');
+        print('Response Body: ${response.body}');
+      } else {
+         Map<String, dynamic> responseData = json.decode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).colorScheme.error,
+            content: Text(
+              responseData['message']!,
+              style: GoogleFonts.readexPro(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+        throw Exception('Failed to load celebrity details: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to load celebrity details: $e');
+    }
+  }
+
+
+
+// APP BG AND THEMING 
+
+Step 1: Enclose SingleChildScrollView in :
+
+     Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+
+Step 2:  Modify body 
+
+  body: Stack(
+        children: [
+      Positioned.fill(
+      child: Opacity(
+      opacity: 0.5, // Adjust opacity for desired visibility (0.0 - invisible, 1.0 - fully visible)
+        child: Image.asset(
+          'assets/apploginbg.jpg', // Replace with your background image path
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
+
+=======================================================================================================================================
+
+  Future<void> _rejectOrder(int id) async {
+    String? token = await readValue();
+    String? url = dotenv.env['URL'];
+    String orderEndpoint = "$url/order/$id";
+    Map<String, String> reqHeader = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token"
+    };
+    Map<String, String> requestBody = {
+      "status": "rejected" // Update status to "rejected"
+    };
+
+    try {
+      // Print request headers and body
+      print("Request Headers: $reqHeader");
+      print("Request Body: ${json.encode(requestBody)}");
+
+      final response = await http.patch(
+        Uri.parse(orderEndpoint),
+        headers: reqHeader,
+        body: json.encode(requestBody),
+      );
+
+      // Print response headers and body
+      print("Response Headers: ${response.headers}");
+      print("Response Body: ${response.body}");
+Map<String, dynamic> responseData = json.decode(response.body);
+      if (response.statusCode == 200) {
+        // Update local state or handle success as needed
+        print("Order $id rejected successfully");
+        setState(() {
+          OrderData.orders.firstWhere((order) => order.id == id).status = "rejected";
+          _applyFilter();
+
+        });
+
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).colorScheme.error,
+            content: Text(
+              responseData['message']!,
+              style: GoogleFonts.readexPro(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+
+        throw Exception('Failed to reject order $id');
+      }
+    } catch (e) {
+      print('Error rejecting order $id: $e');
+    }
+  }
+
+-------------------------------
+
+Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AuthScreenSignUp(),
+            ),
+          );
+
+--------------------------------
+                                  await _confirmBookService(context, service.id, userId, service.celebid, userProfile);

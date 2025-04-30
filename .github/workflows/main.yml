@@ -1,0 +1,46 @@
+name: Build and Update APK
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '2.10.0' # specify your Flutter version
+
+    - name: Flutter pub get
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release.apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+    - name: Commit APK to branch
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git checkout dev
+        mv build/app/outputs/flutter-apk/app-release.apk app-release.apk
+        git add app-release.apk
+        git commit -m "Update APK on push"
+        git push origin dev

@@ -30,6 +30,7 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
   String? apiUrl = dotenv.env['API_URL'];
+
   if (apiUrl != null) {
     print('API URL: $apiUrl');
   } else {

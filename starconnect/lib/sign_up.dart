@@ -9,7 +9,7 @@ import 'login_screen.dart';
 import 'package:http/http.dart' as http;
 import 'celeb_onboarding_details.dart';
 
-String? url = dotenv.env['URL'];
+String? apiUrl = dotenv.env['API_URL'];
 
 class SignUpControllers {
   static final TextEditingController nameController = TextEditingController();
@@ -50,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final String socials = SignUpControllers.socialsController.text;
       final String phone = SignUpControllers.phoneNumberController.text;
 
-      String endpoint = _isCelebrity ? "$url/celeb" : "$url/fan";
+      String endpoint = _isCelebrity ? "$apiUrl/celeb" : "$apiUrl/fan";
 
       Map<String, String> reqBody = _isCelebrity
           ? {

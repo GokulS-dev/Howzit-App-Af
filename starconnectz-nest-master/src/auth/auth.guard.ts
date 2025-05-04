@@ -7,16 +7,10 @@ import {
 import * as paseto from 'paseto';
 import * as fs from 'fs';
 import { Request } from 'express';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly pasetoKey: string;
-
-  constructor(private configService: ConfigService) {
-    // Get PASETO_KEY from config
-    this.pasetoKey = this.configService.getOrThrow('PASETO_KEY');
-  }
+  private readonly publicKeyPath = 'public-key.pem'; // or read from env if you want
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -29,14 +23,11 @@ export class AuthGuard implements CanActivate {
         V4: { verify },
       } = paseto;
 
-      // Load the public key for verification
-      const publicKey = fs.readFileSync(this.pasetoKey, 'utf8');
-
-      // Verify the token
+      const publicKey = fs.readFileSync(this.publicKeyPath, 'utf8');
       const payload = await verify(token, publicKey);
-      if (payload['secret_key'] === this.pasetoKey) {
-        request['user'] = payload;
-      }
+
+      // If needed, you can add more checks here
+      request['user'] = payload;
     } catch (error) {
       throw new UnauthorizedException(
         'Token invalid or expired. Please login again',

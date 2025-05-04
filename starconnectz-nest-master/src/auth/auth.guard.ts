@@ -11,7 +11,12 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private configService: ConfigService) {}
+  private readonly pasetoKey: string;
+
+  constructor(private configService: ConfigService) {
+    // Get PASETO_KEY from config
+    this.pasetoKey = this.configService.getOrThrow('PASETO_KEY');
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -23,11 +28,13 @@ export class AuthGuard implements CanActivate {
       const {
         V4: { verify },
       } = paseto;
-      const publicKey = fs.readFileSync('public-key.pem');
+
+      // Load the public key for verification
+      const publicKey = fs.readFileSync(this.pasetoKey, 'utf8');
+
+      // Verify the token
       const payload = await verify(token, publicKey);
-      if (
-        payload['secret_key'] === this.configService.getOrThrow('PASETO_KEY')
-      ) {
+      if (payload['secret_key'] === this.pasetoKey) {
         request['user'] = payload;
       }
     } catch (error) {

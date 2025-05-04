@@ -1,5 +1,4 @@
-// import { Module } from '@nestjs/common';
-import { Module, Injectable } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CelebModule } from './celeb/celeb.module';
@@ -16,33 +15,32 @@ import { VideosModule } from './videos/videos.module';
 import { AudiosModule } from './audios/audios.module';
 import { MeetingModule } from './meeting/meeting.module';
 import { MerchModule } from './merch/merch.module';
-import { ConfigService } from '@nestjs/config';
+
+import { PasetoService } from './paseto/paseto.service';
+import { KeysController } from './paseto/keys.controller';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    MulterModule.register({
+      storage: memoryStorage(),
+    }),
     CelebModule,
     FanModule,
     PrismaModule,
     PostModule,
     ServiceModule,
     OrderModule,
-    ConfigModule.forRoot({ isGlobal: true }),
-    MulterModule.register({ storage: memoryStorage() }),
     AuthModule,
     VideosModule,
     AudiosModule,
     MeetingModule,
     MerchModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, KeysController],
+  providers: [AppService, PasetoService],
 })
 export class AppModule {}
-
-@Injectable()
-export class ExampleService {
-  constructor(private configService: ConfigService) {
-    const accessKey = this.configService.get<string>('ACCESS_KEY');
-    console.log('Access Key:', accessKey);
-  }
-}

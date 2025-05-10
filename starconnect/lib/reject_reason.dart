@@ -149,7 +149,7 @@ class _RejectReasonState extends State<RejectReason> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
               ),
             ),
@@ -163,7 +163,7 @@ class _RejectReasonState extends State<RejectReason> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),

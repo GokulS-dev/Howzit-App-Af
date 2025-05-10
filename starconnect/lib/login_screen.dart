@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -31,7 +30,7 @@ class _AuthScreenState extends State<AuthScreen> {
     super.initState();
     usernameController = TextEditingController();
     passwordController = TextEditingController();
-    dotenv.load(); // Ensure the .env file is loaded
+    // Removed dotenv.load() from here – should be in main()
   }
 
   @override
@@ -78,7 +77,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
     String? apiUrl = dotenv.env['API_URL'];
     if (apiUrl == null || apiUrl.isEmpty) {
-      _showErrorDialog(context, 'API URL is not set.');
+      setState(() => _isLoading = false);
+      _showErrorDialog(context, 'API URL is not set in .env file.');
       return;
     }
 
@@ -91,8 +91,8 @@ class _AuthScreenState extends State<AuthScreen> {
       "type": type,
     };
 
-    // Print the request body to check the values being sent
     print("Request Body: $reqBody");
+    print("Calling API: $endpoint");
 
     try {
       final response = await http
@@ -103,7 +103,6 @@ class _AuthScreenState extends State<AuthScreen> {
       )
           .timeout(const Duration(seconds: 10));
 
-      // Print the response body for debugging
       print('Response: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {

@@ -115,7 +115,7 @@ class _PersonalTimePageState extends State<PersonalTimeFanPage> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),

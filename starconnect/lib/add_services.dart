@@ -18,8 +18,9 @@ Future<String?> readValue() async {
   return value;
 }
 
-String? url = dotenv.env['URL'];
-String endpoint = url! + '/service';
+
+String? apiurl = dotenv.env['API_URL'];
+String endpoint = (apiurl ?? '') + '/service';
 
 class ServiceController {
   final TextEditingController amountController;
@@ -131,7 +132,7 @@ class _CelebrityProfileScreenState extends State<AddServices> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -217,7 +218,7 @@ class _CelebrityProfileScreenState extends State<AddServices> {
                     setState(() {
                       _selectedProfileType = newValue;
                       // Update the categoryController of the current service
-                      _serviceControllers[_currentServiceIndex].categoryController.text = newValue!;
+                      _serviceControllers[_currentServiceIndex].selectedService = newValue ?? 'defaultService';
                     });
                   },
                   decoration: InputDecoration(
@@ -283,7 +284,7 @@ class _CelebrityProfileScreenState extends State<AddServices> {
                     }).toList(),
                     onChanged: (newValue) {
                       setState(() {
-                        _serviceControllers[_currentServiceIndex].selectedService = newValue!;
+                        _serviceControllers[_currentServiceIndex].selectedService = newValue;
                       });
                     },
                     decoration: InputDecoration(

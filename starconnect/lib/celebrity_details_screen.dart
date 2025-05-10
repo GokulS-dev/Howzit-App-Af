@@ -19,8 +19,8 @@ Future<String?> readValue() async {
   return value;
 }
 
-String? url = dotenv.env['URL'];
-String ordersEndpoint = "$url/order";
+String? apiurl = dotenv.env['API_URL'];
+String ordersEndpoint = "$apiurl/order";
 
 UserProfile parseUserProfile(String jsonString) {
   final jsonResponse = json.decode(jsonString);
@@ -104,7 +104,7 @@ class CelebrityDetailsScreen extends StatefulWidget {
 
 class _CelebrityDetailsScreenState extends State<CelebrityDetailsScreen> {
   Future<void> _refreshDetails() async {
-    String celebDetailsEndpoint = "$url/celeb/";
+    String celebDetailsEndpoint = "$apiurl/celeb/";
     Map<String, String> reqBody = {"username": userProfile.username};
     String? token = await readValue();
     if (token == null) {
@@ -170,7 +170,7 @@ class _CelebrityDetailsScreenState extends State<CelebrityDetailsScreen> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              data['message']!,
+              data['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -198,7 +198,7 @@ class _CelebrityDetailsScreenState extends State<CelebrityDetailsScreen> {
   Future<void> sendFollowRequest(String userName, String celebName) async {
     try {
       String? token = await readValue();
-      String followEndpoint = "$url/fan/follow";
+      String followEndpoint = "$apiurl/fan/follow";
 
       Map<String, dynamic> requestBody = {
         'fan_username': widget.username,
@@ -223,7 +223,7 @@ class _CelebrityDetailsScreenState extends State<CelebrityDetailsScreen> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -241,7 +241,7 @@ class _CelebrityDetailsScreenState extends State<CelebrityDetailsScreen> {
   Future<void> unsendFollowRequest(String userName, String celebName) async {
     try {
       String? token = await readValue();
-      String followEndpoint = "$url/fan/unfollow";
+      String followEndpoint = "$apiurl/fan/unfollow";
 
       Map<String, dynamic> requestBody = {
         'fan_username': widget.username,
@@ -266,7 +266,7 @@ class _CelebrityDetailsScreenState extends State<CelebrityDetailsScreen> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -290,7 +290,7 @@ class _CelebrityDetailsScreenState extends State<CelebrityDetailsScreen> {
 
   bool checkFollowStatus()  {
     String? userIdStr = widget.userId.toString();
-    return isFollowing(userProfile.followers, userIdStr!);
+    return isFollowing(userProfile.followers, userIdStr);
   }
 
   @override

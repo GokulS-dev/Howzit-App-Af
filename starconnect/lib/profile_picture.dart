@@ -21,8 +21,8 @@ Future<String?> readValue() async {
   return value;
 }
 
-String? url = dotenv.env['URL'];
-String endpoint = url! + '/celeb/updateProfilePic';
+String? apiurl = dotenv.env['API_URL'];
+String endpoint = (apiurl ?? 'https://your-default-api.com') + '/celeb/updateProfilePic';
 
 
 

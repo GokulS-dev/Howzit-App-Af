@@ -88,7 +88,7 @@ Map<String, dynamic> responseData = json.decode(response.body);
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -176,7 +176,7 @@ Map<String, dynamic> responseData = json.decode(response.body);
                             child: AspectRatio(
                               aspectRatio: 3 / 4, // Adjust this ratio as needed
                               child: Image.network(
-                                post['imageURL']!,
+                                post['imageURL'],
                                 fit: BoxFit.cover
                                 ,
                               ),

@@ -22,8 +22,8 @@ Future<String?> readValue() async {
   }
   return value;
 }
-String? url = dotenv.env['URL'];
-String? endpoint = '$url/celeb';
+String? apiurl = dotenv.env['API_URL'];
+String? endpoint = '$apiurl/celeb';
 
 Future<String> fetchProfile(String username) async {
   String? token = await readValue();

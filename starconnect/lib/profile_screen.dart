@@ -25,8 +25,8 @@ Future<String?> readValue() async {
   return value;
 }
 
-String? url = dotenv.env['URL'];
-String endpoint = url! + '/service/';
+String? apiurl = dotenv.env['API_URL'];
+String endpoint = apiurl! + '/service/';
 
 class ProfileScreen extends StatefulWidget {
   final String jsonString;
@@ -158,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
               ),
             ),
@@ -483,7 +483,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
   Future<void> _refreshProfile() async {
-    String? endpoint = '$url/celeb';
+    String? endpoint = '$apiurl/celeb';
     final Uri uri = Uri.parse("$endpoint/${userProfile.username}");
     String? token = await readValue();
     if (token == null) {
@@ -535,7 +535,7 @@ Map<String, dynamic> responseData = json.decode(response.body);
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
               ),
             ),
@@ -564,7 +564,7 @@ Map<String, dynamic> responseData = json.decode(response.body);
     File? _image;
     final ImagePicker _picker = ImagePicker();
     final pickedFile = await _picker.pickImage(source: source);
-    final editProfileEndpoint = "$url/celeb/updateProfilePic";
+    final editProfileEndpoint = "$apiurl/celeb/updateProfilePic";
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -607,7 +607,7 @@ Map<String, dynamic> responseData = json.decode(response.body);
             SnackBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               content: Text(
-                responseJson['message']!,
+                responseJson['message'],
                 style: GoogleFonts.readexPro(
                 ),
               ),

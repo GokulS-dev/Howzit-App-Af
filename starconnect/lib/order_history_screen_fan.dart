@@ -79,7 +79,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreenFan> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -144,7 +144,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreenFan> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -417,7 +417,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreenFan> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),

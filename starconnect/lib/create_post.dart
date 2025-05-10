@@ -8,7 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-String? url = dotenv.env['URL'];
+String? apiurl = dotenv.env['API_URL'];
 final FlutterSecureStorage _storage = FlutterSecureStorage();
 
 Future<String?> readValue() async {
@@ -36,7 +36,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final TextEditingController _captionController = TextEditingController();
   bool _isUploading = false;
 
-  String endpoint = url! + '/post';
+  String endpoint = (apiurl ?? 'https://example.com') + '/post';
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);

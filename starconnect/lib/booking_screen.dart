@@ -39,8 +39,8 @@ class _BookWishScreenState extends State<BookWishScreen> {
   final TextEditingController _detailsController = TextEditingController();
 
   Future<void> bookService(int serviceId, int userId, int celebid) async {
-    String? url = dotenv.env['URL'];
-    String ordersEndpoint = "$url/order";
+    String? apiurl = dotenv.env['API_URL'];
+    String ordersEndpoint = "$apiurl/order";
     String? token = await readValue();
     Map<String, dynamic> requestBody = {
 
@@ -72,7 +72,7 @@ class _BookWishScreenState extends State<BookWishScreen> {
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
@@ -169,7 +169,7 @@ ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.error,
             content: Text(
-              responseData['message']!,
+              responseData['message'],
               style: GoogleFonts.readexPro(
                 color: Colors.white,
               ),
